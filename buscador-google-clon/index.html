@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Google</title>
+  <!-- Fuente -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --border:#dfe1e5;
+      --btn-bg:#f8f9fa;
+      --btn-text:#3c4043;
+      --icon:#9aa0a6;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Roboto, Arial, sans-serif;
+      background:#fff;
+      color:#202124;
+    }
+    main{
+      min-height:100svh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:24px;
+      padding:24px;
+    }
+    .logo{margin-bottom:8px}
+    .logo img{width:272px;height:auto}
+
+    /* Barra de búsqueda */
+    .search{
+      width:min(90vw, 584px);
+      display:flex; align-items:center; gap:10px;
+      border:1px solid var(--border);
+      border-radius:24px;
+      padding:8px 14px;
+      background:#fff;
+      transition:box-shadow .2s ease, border-color .2s ease;
+    }
+    .search:hover{
+      box-shadow:0 1px 6px rgba(32,33,36,.28);
+    }
+    .search:focus-within{
+      box-shadow:0 1px 6px rgba(32,33,36,.40);
+      border-color:#dadce0;
+    }
+    .icon{display:inline-flex;align-items:center;justify-content:center}
+    .icon svg{width:20px;height:20px;fill:var(--icon)}
+    .voice{
+      appearance:none;background:transparent;border:0;cursor:pointer;
+      padding:0;display:inline-flex;align-items:center;justify-content:center
+    }
+    .voice:focus-visible{outline:2px solid #4285f4;outline-offset:3px;border-radius:4px}
+
+    .search input{
+      flex:1;border:0;outline:0;background:transparent;
+      font-size:16px;line-height:24px;height:34px;
+    }
+    .search input::placeholder{color:#5f6368}
+
+    /* Botones */
+    .buttons{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+    .gbtn{
+      background:var(--btn-bg);
+      border:1px solid var(--btn-bg);
+      color:var(--btn-text);
+      border-radius:4px;
+      padding:10px 16px;
+      font-size:14px;
+      cursor:pointer;
+      transition:border-color .15s ease, box-shadow .15s ease;
+    }
+    .gbtn:hover{border-color:#dadce0;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+    .gbtn:active{border-color:#d3d6da}
+    .gbtn:focus-visible{outline:2px solid #4285f4;outline-offset:2px}
+
+    @media (max-width:360px){
+      .logo img{width:200px}
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- Logo -->
+    <div class="logo">
+      <img alt="Google" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png">
+    </div>
+
+    <!-- Formulario de búsqueda -->
+    <form id="searchForm" class="search" role="search" action="https://google.com/search" method="GET" autocomplete="off">
+      <span class="icon" aria-hidden="true">
+        <!-- Lupa -->
+        <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23C15.99 6.01 13.48 3.5 10.5 3.5S5.01 6.01 5.01 9s2.51 5.5 5.49 5.5a6.47 6.47 0 0 0 4.23-1.57l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0s.41-1.08 0-1.49L15.5 14Zm-5 0C8.01 14 6 11.99 6 9.5S8.01 5 10.5 5 15 7.01 15 9.5 12.99 14 10.5 14Z"/></svg>
+      </span>
+      <input id="q" name="q" type="text" aria-label="Buscar" placeholder="Buscar en Google...">
+      <button class="voice" type="button" aria-label="Búsqueda por voz" title="Búsqueda por voz">
+        <!-- Micrófono -->
+        <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21H9v2h6v-2h-2v-3.08A7 7 0 0 0 19 11h-2Z"/></svg>
+      </button>
+    </form>
+
+    <!-- Botones -->
+    <div class="buttons">
+      <button class="gbtn" type="submit" form="searchForm">Buscar con Google</button>
+      <button class="gbtn" id="lucky" type="button">Me siento con suerte</button>
+    </div>
+  </main>
+
+  <script>
+    const form  = document.getElementById('searchForm');
+    const input = document.getElementById('q');
+    const lucky = document.getElementById('lucky');
+
+    // Evita enviar si está vacío
+    form.addEventListener('submit', (e) => {
+      if (!input.value.trim()) e.preventDefault();
+      // Si tiene texto, el form construye: https://google.com/search?q=<query>
+    });
+
+    // Enter ya somete el formulario (action GET). Esto cumple el requisito.
+
+    // "Me siento con suerte": va al primer resultado
+    lucky.addEventListener('click', () => {
+      const q = input.value.trim();
+      if (q) window.location.href = `https://google.com/search?q=${encodeURIComponent(q)}&btnI=1`;
+    });
+  </script>
+</body>
+</html>
